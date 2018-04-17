@@ -38,7 +38,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <Router history={browserHistory}>
+      <Router history={browserHistory} basename='/test'>
         <div>
           <Header title={'cps todo-list'} />
           <div className="pure-menu pure-menu-horizontal pure-menu-scrollable">

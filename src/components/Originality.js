@@ -53,6 +53,9 @@ class Originality extends React.Component {
     menu.push(<li key="config-originalityOrder" className="pure-menu-item">
       <Link className="pure-menu-link" to="/config/originalityOrder">排序</Link>
     </li>)
+    menu.push(<li key="config-export-inport" className="pure-menu-item">
+      <Link className="pure-menu-link" to="/config/exportAndImport">导入导出</Link>
+    </li>)
 
     return (
       <div className="componet-originality" style={{ height: divHeight }}>

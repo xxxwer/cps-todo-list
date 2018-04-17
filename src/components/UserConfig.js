@@ -14,6 +14,8 @@ class UserConfig extends React.Component {
       [field]: store.getConfig(field)
     }
     this.handleSimpleConfigBtnClick = this.handleSimpleConfigBtnClick.bind(this)
+    this.handleExport = this.handleExport.bind(this)
+    this.handleImport = this.handleImport.bind(this)
   }
 
   componentDidMount() {
@@ -27,8 +29,27 @@ class UserConfig extends React.Component {
       config: this.state.config
     })
     store.setConfig(field, value)
-    
+
     this.props.history.push('/originality/list')
+  }
+
+  handleExport(e) {
+    e.preventDefault()
+    let data = store.getAllData()
+    let aLink = document.getElementById('downloadLink')
+    util.downloadFile('cps-todo-list-data.json', JSON.stringify(data), aLink)
+    aLink.text = '请点击 下载保存'
+  }
+
+  handleImport(e) {
+    e.preventDefault()
+    let f = (data) => {
+      let userData = JSON.parse(data)
+      if (typeof userData === 'object' && userData.hasOwnProperty('originalityList')) {
+        store.setAllData(userData)
+      }
+    }
+    util.localFileReader(e.target, f)
   }
 
   render() {
@@ -59,15 +80,34 @@ class UserConfig extends React.Component {
       return result
     }
 
+    let exportImportJSX = () => {
+      let result = <div>
+        <legend>导出记录</legend>
+        <button
+          className='pure-button pure-u-3-4'
+          onClick={this.handleExport.bind(this)}>
+          生成文件
+        </button>
+        <a href="javascript:;" className='pure-u-3-4 padding-top-1' id="downloadLink">请先点击 生成文件</a>
+        <legend>导入记录</legend>
+        <input type="file" onChange={this.handleImport} className='padding-top-1' />
+      </div>
+
+      return result
+    }
+
     return (
       <div className="component-user-config">
         <div id="originalityOrder" className="config-field">
           <legend>创意收集 排序</legend>
           {originalityOrderJSX()}
         </div>
+        <div id="originalityOrder" className="config-field">
+          {exportImportJSX()}
+        </div>
       </div>
     )
   }
 }
- 
+
 export default UserConfig;

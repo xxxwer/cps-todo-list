@@ -4,9 +4,6 @@ import util from './util';
 
 let store = {}
 
-// 删除
-
-
 // 创意收集
 store.getOriginality = function(id) {
   let str = localStorage.getItem('originalityList')
@@ -112,6 +109,25 @@ store.setConfig = function(key, value) {
   let str = JSON.stringify(data)
 
   localStorage.setItem('userConfig', str)
+}
+
+// 获取所有 数据
+store.getAllData = function() {
+  let result = {}
+  result['originalityList'] = store.getOriginality()
+  result['action'] = store.getAction()
+  result['userConfig'] = store.getConfig()
+  return result
+}
+// 替换 保存所有数据
+store.setAllData = function(data) {
+  let setF = (key) => {
+    let str = JSON.stringify(data[key])
+    localStorage.setItem(key, str)
+  }
+  setF('originalityList')
+  setF('action')
+  setF('userConfig')
 }
 
 export default store;
